@@ -9,6 +9,7 @@ from app.database import engine, Base, get_db
 from app import models
 
 from app.services.metric_service import save_metrics
+from app.services.alert_service import save_alerts
 
 
 Base.metadata.create_all(bind=engine)
@@ -44,9 +45,12 @@ def metrics(db: Session = Depends(get_db)):
 
 
 @app.get("/alerts")
-def alerts():
+def alerts(db: Session = Depends(get_db)):
     metrics_data = get_system_metrics()
+
     alerts_data = generate_alerts(metrics_data)
+
+    save_alerts(db, alerts_data)
 
     return {
         "alerts": alerts_data,
