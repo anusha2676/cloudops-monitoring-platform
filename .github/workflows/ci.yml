@@ -1,4 +1,3 @@
-
 name: CloudOps CI
 
 on:
@@ -29,3 +28,6 @@ jobs:
 
       - name: Run tests
         run: PYTHONPATH=. pytest
+
+      - name: Build Docker image
+        run: docker build -t cloudops-monitoring-platform .
