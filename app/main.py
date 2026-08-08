@@ -1,4 +1,8 @@
 from fastapi import FastAPI, Depends
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from fastapi import Request
+
 from sqlalchemy.orm import Session
 
 from app.monitoring.system_monitor import get_system_metrics
@@ -23,12 +27,17 @@ app = FastAPI(
 )
 
 
-@app.get("/")
-def home():
-    return {
-        "message": "CloudOps Monitoring Platform is running",
-        "status": "healthy"
-    }
+templates = Jinja2Templates(
+    directory="app/dashboard/templates"
+)
+
+
+@app.get("/", response_class=HTMLResponse)
+def home(request: Request):
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request}
+    )
 
 
 @app.get("/health")
