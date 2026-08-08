@@ -1,247 +1,259 @@
-🚀 CloudOps Monitoring & Auto-Healing Platform
+☁️ CloudOps Monitoring & Auto-Healing Platform
 
-A Python-based CloudOps platform for monitoring system resources, detecting abnormal conditions, generating alerts, and performing controlled automated recovery actions.
+A cloud-based system monitoring and auto-healing platform built with Python, FastAPI, SQLAlchemy, Docker, and GitHub Actions.
 
-📌 Overview
+The platform continuously monitors system resources such as CPU, memory, disk, and network usage. It provides health information, generates alerts for critical conditions, records monitoring data, and recommends controlled recovery actions.
 
-The CloudOps Monitoring & Auto-Healing Platform is designed to demonstrate how monitoring, alerting, automation, and recovery can be combined into a single platform.
+🚀 Live Demo
 
-The application continuously monitors system resources such as CPU, memory, disk, and network usage. When predefined thresholds are exceeded or a monitored service becomes unhealthy, the platform generates an alert and can perform a controlled recovery action.
+Live Application:
+https://cloudops-monitoring-platform.onrender.com
 
-🎯 Objectives
+📌 Project Overview
 
-- Monitor system resources in real time
-- Detect abnormal resource usage
-- Generate alerts based on configurable thresholds
-- Record monitoring and alert history
-- Perform controlled automated recovery actions
-- Provide a centralized monitoring dashboard
-- Containerize the application using Docker
-- Implement automated testing and CI/CD
-- Deploy the application to a cloud environment
+The CloudOps Monitoring Platform is designed to demonstrate how cloud and DevOps concepts can be combined with Python application development.
 
-✨ Key Features
+The application provides REST APIs and a web dashboard for monitoring system health and resource utilization.
 
-- 📊 Real-time system monitoring
-- 💻 CPU, memory, disk and network monitoring
-- 🚨 Threshold-based alerting
-- 🔧 Controlled auto-healing
-- 📈 Monitoring dashboard
-- 🗄️ Database for metrics and events
-- 🔐 Admin authentication
-- 🐳 Docker containerization
-- 🔄 GitHub Actions CI/CD
-- ☁️ Cloud deployment
-- 📝 Event and recovery logs
+Key capabilities
 
-🛠️ Technology Stack
+- Real-time CPU monitoring
+- Memory usage monitoring
+- Disk usage monitoring
+- Network statistics
+- System health evaluation
+- Automated alert generation
+- Severity-based alert classification
+- Controlled auto-healing logic
+- Metric and alert persistence using SQLite
+- REST APIs using FastAPI
+- Web dashboard using Jinja2
+- Docker containerization
+- Docker Compose support
+- Automated testing with Pytest
+- Continuous Integration with GitHub Actions
+- Cloud deployment using Render
 
-Technology| Purpose
-Python| Core programming
-FastAPI| Backend REST API
-HTML/CSS/JavaScript| Web dashboard
-psutil| System monitoring
-SQLite/PostgreSQL| Database
-Chart.js| Data visualization
-Docker| Containerization
-GitHub Actions| CI/CD
-AWS| Cloud deployment
-Git/GitHub| Version control
+🏗️ Architecture
 
-🏗️ System Architecture
-
-                    ┌──────────────────────┐
-                    │   Web Dashboard      │
-                    │ CPU / RAM / Disk     │
-                    │ Alerts / Status      │
-                    └──────────┬───────────┘
+                    ┌─────────────────────┐
+                    │       User          │
+                    └──────────┬──────────┘
                                │
                                ▼
-                    ┌──────────────────────┐
-                    │     FastAPI API      │
-                    └──────────┬───────────┘
+                    ┌─────────────────────┐
+                    │   FastAPI Server    │
+                    └──────────┬──────────┘
                                │
-                 ┌─────────────┴─────────────┐
-                 ▼                           ▼
-        ┌──────────────────┐       ┌──────────────────┐
-        │ Monitoring Engine│       │   Alert Engine   │
-        └────────┬─────────┘       └────────┬─────────┘
-                 │                          │
-                 ▼                          ▼
-        CPU / RAM / Disk              Threshold Detection
-                                            │
-                                            ▼
-                                  ┌──────────────────┐
-                                  │ Auto-Healing     │
-                                  │ Engine           │
-                                  └────────┬─────────┘
-                                           │
-                                           ▼
-                                  Recovery Action
+              ┌────────────────┼────────────────┐
+              │                │                │
+              ▼                ▼                ▼
+        Monitoring         Health Check      Dashboard
+        System             Service           (Jinja2)
+              │                │
+              ▼                ▼
+        Alert Generation ──► Auto-Healing
+              │
+              ▼
+        SQLAlchemy / SQLite
+              │
+              ▼
+        Persistent Metrics
+        & Alerts
 
-📁 Project Structure
+        Docker → GitHub Actions → Render
+
+🛠️ Technologies Used
+
+Technology| Purpose
+Python| Application development
+FastAPI| REST API framework
+Psutil| System resource monitoring
+SQLAlchemy| Database ORM
+SQLite| Data storage
+Jinja2| Dashboard templates
+Pytest| Automated testing
+Docker| Containerization
+Docker Compose| Container orchestration
+GitHub Actions| CI/CD
+Render| Cloud deployment
+
+📂 Project Structure
 
 cloudops-monitoring-platform/
 │
 ├── app/
-│   ├── main.py
-│   ├── database.py
-│   ├── models.py
+│   ├── alerts/
+│   │   └── alert_manager.py
+│   │
+│   ├── dashboard/
+│   │   └── templates/
+│   │       └── index.html
+│   │
+│   ├── healing/
+│   │   └── auto_healer.py
 │   │
 │   ├── monitoring/
 │   │   ├── system_monitor.py
 │   │   └── health_checker.py
 │   │
-│   ├── alerts/
-│   │   └── alert_manager.py
+│   ├── services/
+│   │   ├── metric_service.py
+│   │   └── alert_service.py
 │   │
-│   ├── healing/
-│   │   └── auto_healer.py
-│   │
-│   └── api/
-│       └── routes.py
-│
-├── dashboard/
-│   ├── index.html
-│   ├── style.css
-│   └── script.js
+│   ├── database.py
+│   ├── models.py
+│   └── main.py
 │
 ├── tests/
-│   └── test_monitoring.py
+│   ├── test_api.py
+│   ├── test_monitoring.py
+│   └── test_alerts.py
 │
-├── screenshots/
-│
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-│
-├── requirements.txt
 ├── Dockerfile
 ├── docker-compose.yml
-├── .gitignore
+├── requirements.txt
 └── README.md
 
-⚙️ Monitoring
+🔌 API Endpoints
 
-The platform is designed to monitor:
+Home / Dashboard
 
-- CPU utilization
-- Memory utilization
-- Disk utilization
-- Network activity
-- Application/service health
+GET /
 
-Example thresholds:
+Displays the monitoring dashboard.
 
-CPU > 80%   → WARNING
-CPU > 90%   → CRITICAL
+Health
 
-RAM > 80%   → WARNING
-RAM > 90%   → CRITICAL
+GET /health
 
-Disk > 85%  → WARNING
-Disk > 95%  → CRITICAL
+Returns:
 
-These values will be configurable in the application.
-
-🚨 Alert Management
-
-When a monitoring threshold is exceeded, the platform creates an alert containing information such as:
-
-- Alert type
-- Severity
-- Timestamp
-- Current resource value
-- Threshold value
-- Alert status
-
-🔧 Auto-Healing
-
-The auto-healing module is designed to perform controlled recovery actions when predefined conditions are detected.
-
-Problem Detected
-       ↓
-Health Check
-       ↓
-Alert Generated
-       ↓
-Recovery Action
-       ↓
-Health Check Again
-       ↓
-Recovery Confirmed
-
-All recovery actions will be logged for monitoring and auditing.
-
-🗄️ Data Storage
-
-The platform will store:
+- Overall system status
+- CPU usage
+- Memory usage
+- Disk usage
 
 Metrics
 
-- Timestamp
+GET /metrics
+
+Returns:
+
 - CPU usage
 - Memory usage
 - Disk usage
 - Network statistics
 
+Metrics are also stored in the database.
+
 Alerts
 
-- Alert type
-- Severity
-- Message
-- Timestamp
-- Status
+GET /alerts
 
-Healing Events
+Returns:
 
-- Detected problem
-- Recovery action
-- Result
-- Timestamp
+- Generated alerts
+- Alert count
+- Healing results
 
-🐳 Docker
+🚨 Alert Thresholds
 
-The application will be containerized using Docker to provide a consistent development and deployment environment.
+Resource| Warning| Critical
+CPU| ≥ 80%| ≥ 90%
+Memory| ≥ 80%| ≥ 90%
+Disk| ≥ 85%| ≥ 95%
 
-🔄 CI/CD
+Critical alerts trigger the controlled auto-healing logic.
 
-GitHub Actions will be used to automate:
+🩺 Auto-Healing
 
-- Dependency installation
-- Testing
-- Application validation
-- Docker build checks
+The platform evaluates critical alerts and generates a controlled recovery recommendation.
 
-☁️ Cloud Deployment
+Examples include:
 
-The completed application will be prepared for deployment to a cloud environment.
+- CPU recovery recommendation
+- Memory recovery recommendation
+- Disk recovery recommendation
 
-The deployment architecture and cloud configuration will be documented after implementation.
+The current implementation records the recovery action rather than performing destructive system operations.
+
+This design keeps the system safe while demonstrating the concept of automated remediation.
 
 🧪 Testing
 
-Automated tests will be added to verify:
+The project includes automated tests using Pytest.
 
-- Monitoring functions
+Run the tests locally:
+
+PYTHONPATH=. pytest
+
+The test suite covers:
+
 - API endpoints
+- System monitoring
+- CPU usage
+- Memory usage
+- Disk usage
+- Network statistics
 - Alert generation
-- Recovery logic
-- Application health
 
-📸 Screenshots
+🐳 Run with Docker
 
-Screenshots of the completed dashboard, alerts, and monitoring features will be added here.
+Build the Docker image:
+
+docker build -t cloudops-monitoring-platform .
+
+Run the container:
+
+docker run -p 8000:8000 cloudops-monitoring-platform
+
+Open:
+
+http://localhost:8000
+
+🐳 Run with Docker Compose
+
+docker compose up --build
+
+Then open:
+
+http://localhost:8000
+
+⚙️ CI/CD
+
+GitHub Actions automatically:
+
+1. Checks out the repository
+2. Sets up Python
+3. Installs dependencies
+4. Runs automated tests
+5. Builds the Docker image
+
+This helps ensure that changes are tested before deployment.
+
+☁️ Cloud Deployment
+
+The application is deployed as a Dockerized web service on Render.
+
+Live application:
+
+https://cloudops-monitoring-platform.onrender.com
 
 🔮 Future Enhancements
 
+- Prometheus integration
+- Grafana dashboards
+- CloudWatch integration
+- Email and Slack notifications
+- Kubernetes deployment
+- Redis-based caching
+- PostgreSQL database
+- Advanced anomaly detection using machine learning
+- Role-based authentication
+- Real infrastructure remediation
+- Centralized logging
 - Multi-server monitoring
-- Email/notification integration
-- Advanced anomaly detection
-- Machine-learning-based failure prediction
-- Kubernetes monitoring
-- Multi-cloud monitoring
-- Advanced observability and logging
 
 👩‍💻 Author
 
@@ -249,8 +261,10 @@ Anusha B
 
 BCA – Cloud Computing
 
-Interested in Python, Cloud Computing, DevOps and Software Development.
+Interested in Cloud Computing, DevOps, Python Development, and Software Engineering.
 
----
+⭐ Project Highlights
 
-⭐ If you find this project useful, consider giving the repository a star.
+This project demonstrates practical experience with:
+
+Python • FastAPI • Cloud Computing • DevOps • Docker • CI/CD • REST APIs • SQLAlchemy • Monitoring • Alerting • Auto-Healing
