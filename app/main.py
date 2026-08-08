@@ -1,7 +1,15 @@
 from fastapi import FastAPI
+
 from app.monitoring.system_monitor import get_system_metrics
 from app.monitoring.health_checker import check_system_health
 from app.alerts.alert_manager import generate_alerts
+
+from app.database import engine, Base
+from app import models
+
+
+Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI(
     title="CloudOps Monitoring Platform",
