@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.monitoring.system_monitor import get_system_metrics
 from app.monitoring.health_checker import check_system_health
 from app.alerts.alert_manager import generate_alerts
+from app.healing.auto_healer import perform_auto_healing
 
 from app.database import engine, Base, get_db
 from app import models
@@ -52,7 +53,18 @@ def alerts(db: Session = Depends(get_db)):
 
     save_alerts(db, alerts_data)
 
+    healing_results = []
+
+    for alert in alerts_data:
+        result = perform_auto_healing(alert)
+
+        healing_results.append({
+            "alert": alert,
+            "healing": result
+        })
+
     return {
         "alerts": alerts_data,
-        "count": len(alerts_data)
+        "count": len(alerts_data),
+        "healing_results": healing_results
     }
