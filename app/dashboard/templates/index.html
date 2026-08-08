@@ -1,1 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>CloudOps Monitoring Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f4f6f8;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 30px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .value {
+            font-size: 32px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .status {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        #alerts {
+            max-width: 1000px;
+            margin: 30px auto;
+        }
+
+        .alert {
+            background: #fff3cd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🚀 CloudOps Monitoring Dashboard</h1>
+
+    <div class="dashboard">
+
+        <div class="card">
+            <h2>CPU Usage</h2>
+            <div class="value" id="cpu">--%</div>
+        </div>
+
+        <div class="card">
+            <h2>Memory Usage</h2>
+            <div class="value" id="memory">--%</div>
+        </div>
+
+        <div class="card">
+            <h2>Disk Usage</h2>
+            <div class="value" id="disk">--%</div>
+        </div>
+
+        <div class="card">
+            <h2>System Status</h2>
+            <div class="value" id="status">--</div>
+        </div>
+
+    </div>
+
+    <div id="alerts">
+        <h2>🚨 Alerts</h2>
+        <div id="alert-list">Loading...</div>
+    </div>
+
+    <script>
+        async function loadDashboard() {
+            try {
+                const metricsResponse = await fetch("/metrics");
+                const metrics = await metricsResponse.json();
+
+                document.getElementById("cpu").textContent =
+                    metrics.cpu_usage + "%";
+
+                document.getElementById("memory").textContent =
+                    metrics.memory_usage + "%";
+
+                document.getElementById("disk").textContent =
+                    metrics.disk_usage + "%";
+
+                const healthResponse = await fetch("/health");
+                const health = await healthResponse.json();
+
+                document.getElementById("status").textContent =
+                    health.status;
+
+                const alertsResponse = await fetch("/alerts");
+                const alertData = await alertsResponse.json();
+
+                const alertList =
+                    document.getElementById("alert-list");
+
+                alertList.innerHTML = "";
+
+                if (alertData.alerts.length === 0) {
+                    alertList.innerHTML = "<p>No active alerts.</p>";
+                } else {
+                    alertData.alerts.forEach(alert => {
+                        const div = document.createElement("div");
+
+                        div.className = "alert";
+
+                        div.textContent =
+                            alert.severity + ": " + alert.message;
+
+                        alertList.appendChild(div);
+                    });
+                }
+
+            } catch (error) {
+                document.getElementById("status").textContent =
+                    "Unavailable";
+            }
+        }
+
+        loadDashboard();
+
+        setInterval(loadDashboard, 10000);
+    </script>
+
+</body>
+</html>
