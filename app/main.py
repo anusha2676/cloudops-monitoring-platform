@@ -1,6 +1,6 @@
-
 from fastapi import FastAPI
 from app.monitoring.system_monitor import get_system_metrics
+from app.monitoring.health_checker import check_system_health
 
 app = FastAPI(
     title="CloudOps Monitoring Platform",
@@ -19,9 +19,7 @@ def home():
 
 @app.get("/health")
 def health_check():
-    return {
-        "status": "healthy"
-    }
+    return check_system_health()
 
 
 @app.get("/metrics")
