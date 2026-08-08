@@ -1,11 +1,14 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from sqlalchemy.orm import Session
 
 from app.monitoring.system_monitor import get_system_metrics
 from app.monitoring.health_checker import check_system_health
 from app.alerts.alert_manager import generate_alerts
 
-from app.database import engine, Base
+from app.database import engine, Base, get_db
 from app import models
+
+from app.services.metric_service import save_metrics
 
 
 Base.metadata.create_all(bind=engine)
@@ -32,8 +35,12 @@ def health_check():
 
 
 @app.get("/metrics")
-def metrics():
-    return get_system_metrics()
+def metrics(db: Session = Depends(get_db)):
+    metrics_data = get_system_metrics()
+
+    save_metrics(db, metrics_data)
+
+    return metrics_data
 
 
 @app.get("/alerts")
