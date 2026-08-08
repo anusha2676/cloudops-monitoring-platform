@@ -1,0 +1,7 @@
+services:
+  cloudops-monitoring:
+    build: .
+    container_name: cloudops-monitoring
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
