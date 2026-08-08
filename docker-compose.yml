@@ -4,4 +4,11 @@ services:
     container_name: cloudops-monitoring
     ports:
       - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite:///./cloudops.db
+    volumes:
+      - cloudops-data:/app
     restart: unless-stopped
+
+volumes:
+  cloudops-data:
